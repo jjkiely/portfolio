@@ -70,17 +70,19 @@ public class CS210Lab6 {
             7434222118200184219L,
 
     };
+
     //This method finds the smallest distance between the groups of numbers
     private static long findDistance() {
         long currentMinimum = 1682051551566226L;//this initial value is the smallest number in the list
         for (int i = 0; i < 10000; i++) { //this will run 10000 iterations of the method in order to ensure that a small value is found
             Random random = new Random(); //initialises the random class
-            long[] group1 = new long[4]; //first group
+            int n = random.nextInt(64);
+            long[] group1 = new long[n]; //first group
             for (int j = 0; j < group1.length; j++) {
                 int ran = random.nextInt(64);//this loop populates the first group with randomly selected values from the array
                 group1[j] = list[ran];
             }
-            long[] group2 = new long[4]; //second group
+            long[] group2 = new long[64 - n]; //second group
             for (int j = 0; j < group2.length; j++) {
                 int ran = random.nextInt(64); //this loop populates the second group with randomly selected values from the array
                 group2[j] = list[ran];
@@ -102,9 +104,9 @@ public class CS210Lab6 {
         return currentMinimum;
     }
 
-    private static void check(long[] group1, long[] group2) { //this method checks that there are no duplicate values between groups
+    private static void check(long[] group1, long[] group2) {
         for (int i = 0; i < group1.length; i++) { //nested loops allow the code to check from both sides at once
-            for (int j = group1.length-1; j > 0; j--) {
+            for (int j = group1.length - 1; j > 0; j--) {
                 Random random = new Random();
                 if (group1[i] == group1[j]) { //if there is a duplicate
                     int ran = random.nextInt(64); // then the random number is regenerated
@@ -112,8 +114,14 @@ public class CS210Lab6 {
                         ran = random.nextInt(64);
                     }
                     group1[j] = list[ran];// and the duplicate is replaced with a different value from the array
-                }
+                } else
+                    break; //if there is no duplicate then the loop will stop
+            }
+        }
+        for (int i = 0; i < group2.length; i++) {
+            for (int j = group2.length - 1; j > 0; j--) {
                 if (group2[i] == group2[j]) { //as above
+                    Random random = new Random();
                     int ran = random.nextInt(64);
                     while (ran == j) {
                         ran = random.nextInt(64);
@@ -122,9 +130,11 @@ public class CS210Lab6 {
                 } else
                     break; //if there is no duplicate then the loop will stop
             }
+
         }
+
         for (int i = 0; i < group1.length; i++) { //This loop performs the same function as above
-            for (int j = 0; j < group2.length-1; j++) {// except it checks for values that are present in both groups
+            for (int j = 0; j < group2.length - 1; j++) {// except it checks for values that are present in both groups
                 if (group1[i] == group2[j]) {
                     Random random = new Random();
                     int ran = random.nextInt(64);
@@ -138,10 +148,10 @@ public class CS210Lab6 {
         }
     }
 
-
         public static void main (String[]args)
         {
             sort(list);
             System.out.println(findDistance());
         }
+
 }
