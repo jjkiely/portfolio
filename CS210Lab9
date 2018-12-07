@@ -1,0 +1,77 @@
+import java.util.*;
+
+public class CS210Lab9 {
+    public static void main(String args[] ) throws Exception {
+        Scanner myscanner = new Scanner(System.in);
+        int num = Integer.parseInt(myscanner.nextLine());
+        Link[] array = new Link[num];
+        for(int i=0;i<num;i++){
+            array[i]=new Link(myscanner.nextLine());    
+        }
+        while(myscanner.hasNext()){
+            int select=myscanner.nextInt();
+            int next=myscanner.nextInt();
+            if(next!=-1){
+                array[select].next=array[next];
+            }
+        }
+        LinkedList mylist = new LinkedList();
+        if(num>0){
+            mylist.first=array[0];
+        }
+        System.out.println(findLoopLength(mylist));
+    }
+
+public static int findLoopLength(LinkedList myList){
+        if(myList.isEmpty())
+            return 0;
+
+        Link current = myList.first;
+        int count = 0;
+        Link ar[] = new Link[100]; 
+
+        while(current.next != null){
+            ar[count] = current;
+
+            for(int i = 0; i < count; i++)
+                if(ar[i] == current) 
+                    return count-i; 
+
+            count++; 
+            current = current.next;
+        }
+        return 0;
+   }
+
+}
+
+class Link{
+	public String data;
+	public Link next;
+    
+    public Link(String input){
+        data=input;
+        next=null;
+    }
+}
+
+class LinkedList {
+	public Link first;
+
+	public LinkedList( ){
+		first=null;
+	}
+
+	public boolean isEmpty( ){
+		return (first==null);
+	}
+    
+    public void insertHead(Link insert){
+        if(isEmpty()){
+            first=insert;
+        }else{
+            insert.next=first;
+            first=insert;
+        }
+    }
+}
